@@ -16,6 +16,16 @@ app.get("/orders",adminMiddleware,async(req,res)=>{
         res.send(err.message)
     }
 })
+app.get("/orders/:id",adminMiddleware,async(req,res)=>{
+    try{
+        const {id} = req.params
+        const userOrders = await Address.findById(id)
+        res.send(userOrders)
+    }
+    catch(err){
+        res.send(err.message)
+    }
+})
 
 app.post("/post_orders",auth,async(req,res)=>{
     try{
@@ -27,9 +37,10 @@ app.post("/post_orders",auth,async(req,res)=>{
     }
 })
 
-app.delete("/:id",auth,async(req,res)=>{
+app.delete("/order/:id",auth,async(req,res)=>{
     try{
-        let {id} = req.body
+        let {id} = req.params
+        console.log(id)
         const userOrders = await Address.findByIdAndDelete({_id : id})
         res.send("user product buy details delete")
     }
